@@ -12,6 +12,8 @@ class UsersController < ApplicationController
   
   def show
     @user = User.find(param[:id])
+    @taskposts = @user.taskposts.order('created_at DESC').page(params[:page])
+    count(@user)
   end
   
   def create
