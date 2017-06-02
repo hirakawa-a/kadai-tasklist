@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   end
   
   def show
-    @user = User.find(params[:id])
+    @user = User.find_by(id: params[:id])
     @taskposts = @user.taskpost.order('created_at DESC').page(params[:page])
     count(@user)
   end
@@ -35,4 +35,10 @@ private
 
 def user_params
   params.require(:user).permit(:name, :email, :password, :password_confirmation)
+end
+
+def require_user_logged_in
+    unless logged_in?
+      redirect_to login_url
+    end
 end
