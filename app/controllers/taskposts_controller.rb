@@ -1,11 +1,14 @@
 class TaskpostsController < ApplicationController
+  before_action :require_user_logged_in
+  before_action :correct_user, only: [:destroy]
+
   def create
-    @taskpost = current_user.taskposts.build(taskpost_params)
-    if @taskposts.save
+    @taskpost = current_user.taskpost.build(taskpost_params)
+    if @taskpost.save
       flash[:success] = 'タスクを登録しました。'
       redirect_to root_url
     else
-      @taskposts = current?user.taskposts.order('created_at DESC').page(params[:page])
+      @taskposts = current_user.taskpost.order('created_at DESC').page(params[:page])
       flash.now[:danger] = 'タスクの登録に失敗しました'
       render 'toppages/index'
     end
@@ -24,7 +27,7 @@ class TaskpostsController < ApplicationController
   end
   
   def correct_user
-    @taskpost = current_user.taskposts.find_by(id: params[:id])
+    @taskpost = current_user.taskpost.find_by(id: params[:id])
     unless @taskpost
       redirect_to root_path
     end
