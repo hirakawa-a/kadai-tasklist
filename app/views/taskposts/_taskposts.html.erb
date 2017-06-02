@@ -10,7 +10,8 @@
                     <%= link_to user.name, user_path(user) %> <span class="text-muted">posted at <%= taskpost.created_at %></span>
                 </div>
                 <div>
-                    <%= taskpost.content %>
+                    <p><%= taskpost.status %></p>
+                    <p><%= taskpost.content %></p>
                 </div>
                 <div>
                     <% if current_user == taskpost.user %>
